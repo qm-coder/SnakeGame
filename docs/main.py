@@ -1,4 +1,4 @@
-import asyncio  # 必须导入
+import asyncio
 import pygame
 import random
 import os
@@ -231,8 +231,7 @@ class Game:
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.clock = pygame.time.Clock()
 
-        # --- [修复] 字体支持中文 ---
-        # 优先尝试加载系统自带的中文字体
+        # --- 字体设置 ---
         font_names = ['simhei', 'microsoftyahei', 'stheitirelight', 'arialunicode']
         target_font = None
         available_fonts = pygame.font.get_fonts()
@@ -241,7 +240,6 @@ class Game:
                 target_font = f
                 break
 
-        # 初始化不同大小的字体
         self.font = pygame.font.SysFont(target_font, 24)
         self.big_font = pygame.font.SysFont(target_font, 56, bold=True)
         self.cartoon_font = pygame.font.SysFont(target_font, 40, bold=True)
@@ -576,16 +574,24 @@ class Game:
             self.draw_button(self.btn_hard, "HARD (Fast, 6 Enemies)", mouse_pos, (150, 50, 50))
             self.draw_button(self.btn_theme_menu, "Theme Gallery (Select Style)", mouse_pos, (100, 50, 150))
 
-            # --- 健康游戏忠告 (使用支持中文的字体) ---
+            # --- English Advice for Healthy Gaming ---
+
+            # Title
+            advice_title = self.font.render("Advice for Healthy Gaming", True, (200, 200, 200))
+            self.screen.blit(advice_title, advice_title.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 145)))
+
+            # Content
             advice_lines = [
-                "抵制不良游戏，拒绝盗版游戏。",
-                "注意自我保护，谨防受骗上当。",
-                "适度游戏益脑，沉迷游戏伤身。",
-                "合理安排时间，享受健康生活。"
+                "Resist bad games and refuse pirated games.",
+                "Pay attention to self-protection and beware of being deceived.",
+                "Playing games in moderation benefits the brain, while excessive gaming harms the body.",
+                "Arrange your time reasonably and enjoy a healthy life."
             ]
+
+            start_y = WINDOW_HEIGHT - 120
             for i, line in enumerate(advice_lines):
-                advice_surf = self.font.render(line, True, (180, 180, 180))
-                advice_rect = advice_surf.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 130 + i * 22))
+                advice_surf = self.font.render(line, True, (160, 160, 160))
+                advice_rect = advice_surf.get_rect(center=(WINDOW_WIDTH // 2, start_y + i * 25))
                 self.screen.blit(advice_surf, advice_rect)
 
             hint = self.font.render("Hold Direction Key to BOOST!", True, (255, 200, 0))
